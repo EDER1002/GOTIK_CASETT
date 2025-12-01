@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EDER SIGMA - Playlist y Anuncios</title>
+  <link rel="icon" type="image/jpg" href="descargar (13).jpg">
+  <style>
+    /* Fondo con imagen gótica y animación sutil de brillo */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: url('https://i.pinimg.com/736x/35/d0/9a/35d09aa057b81b012af15e4e55088144.jpg') no-repeat center center fixed;
+      background-size: cover;
+      animation: subtleGlow 20s infinite alternate;
+      z-index: -2;
+    }
+    @keyframes subtleGlow {
+      from { filter: brightness(0.6); }
+      to   { filter: brightness(0.8); }
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Prata', serif;
+      overflow-y: auto;
+      text-align: center;
+      background-color: transparent;
+      color: #e0e0e0;
+    }
+    
+    /* BOTÓN HOME centrado, estilo gótico con animación constante y carrusel al hover */
+    .home-button {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      transform-origin: center;
+      padding: 10px 20px;
+      font-family: 'Old English Text MT', 'Gothic', serif;
+      font-size: 20px;
+      text-decoration: none;
+      color: #e0e0e0;
+      border: 2px solid #000000;
+      border-radius: 8px;
+      overflow: hidden;
+      background: linear-gradient(270deg, #000000, #010101, #000000, #010101);
+      background-size: 400% 400%;
+      /* Animaciones: gradiente y pulsación */
+      animation: gothorainbow 12s ease infinite, buttonSparkle 3s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+      z-index: 100;
+    }
+    @keyframes gothorainbow {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes buttonSparkle {
+      0% { box-shadow: 0 0 5px rgba(148,0,211,0.2); }
+      50% { box-shadow: 0 0 15px rgba(148,0,211,0.8); }
+      100% { box-shadow: 0 0 5px rgba(148,0,211,0.2); }
+    }
+    /* Pseudo-elemento para el carrusel que se muestra al hover */
+    .home-button::after {
+      content: "";
+      position: absolute;
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      bottom: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: -1; /* Para que no tape el texto "HOME" */
+      background-size: cover;
+      background-position: center;
+    }
+    .home-button:hover::after {
+      opacity: 1;
+      animation: carousel 10s linear infinite;
+    }
+    /* Keyframes del carrusel de imágenes */
+    @keyframes carousel {
+      0% { background-image: url("https://i.pinimg.com/236x/8e/37/cd/8e37cd63479c422764013b534f050c35.jpg"); }
+      14.28% { background-image: url("https://i.pinimg.com/236x/8e/37/cd/8e37cd63479c422764013b534f050c35.jpg"); }
+      14.29% { background-image: url("https://i.pinimg.com/736x/e0/e1/8f/e0e18f559ae9c4ff54819f496def336b.jpg"); }
+      28.57% { background-image: url("https://i.pinimg.com/736x/e0/e1/8f/e0e18f559ae9c4ff54819f496def336b.jpg"); }
+      28.58% { background-image: url("https://i.pinimg.com/474x/d2/cc/18/d2cc18720e4b946a40a5fb765f7eeb6e.jpg"); }
+      42.86% { background-image: url("https://i.pinimg.com/474x/d2/cc/18/d2cc18720e4b946a40a5fb765f7eeb6e.jpg"); }
+      42.87% { background-image: url("https://i.pinimg.com/474x/72/5d/63/725d633ff175f878553764cf87dcdcf3.jpg"); }
+      57.15% { background-image: url("https://i.pinimg.com/474x/72/5d/63/725d633ff175f878553764cf87dcdcf3.jpg"); }
+      57.16% { background-image: url("https://i.pinimg.com/236x/bc/10/68/bc106800e350227ad836e0bc244ca68e.jpg"); }
+      71.44% { background-image: url("https://i.pinimg.com/236x/bc/10/68/bc106800e350227ad836e0bc244ca68e.jpg"); }
+      71.45% { background-image: url("https://i.pinimg.com/474x/ed/97/6b/ed976bf8d2c354bbd25ad33864eb3b7e.jpg"); }
+      85.73% { background-image: url("https://i.pinimg.com/474x/ed/97/6b/ed976bf8d2c354bbd25ad33864eb3b7e.jpg"); }
+      85.74% { background-image: url("https://i.pinimg.com/236x/3c/de/7d/3cde7d4cdb1c058f68cdad86eec68235.jpg"); }
+      100% { background-image: url("https://i.pinimg.com/236x/3c/de/7d/3cde7d4cdb1c058f68cdad86eec68235.jpg"); }
+    }
+    
+    /* Animación para las barras laterales */
+    @keyframes sidebarPulse {
+      0% { box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+      50% { box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+      100% { box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    }
+    
+    /* Contenedor principal de la playlist */
+    .playlist-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 100px;
+      padding: 20px;
+      margin-left: 100px;  /* espacio para la barra lateral izquierda */
+      margin-right: 100px; /* espacio para la barra lateral derecha */
+    }
+    /* Cada cassette tiene ahora un id (cassette0, cassette1, etc.) para poder hacer scroll a ellos */
+    .cassette {
+      width: 300px;
+      margin: 15px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+      transition: transform 0.3s;
+      animation: cassetteSymmetry 6s ease-in-out infinite;
+    }
+    .cassette:hover {
+      transform: scale(1.05);
+    }
+    .cassette img {
+      width: 100%;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    /* Botones de control estilo gótico, con símbolos */
+    .gothic-button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: 2px solid #000000;
+      background: linear-gradient(270deg, #000000, #010101, #000000, #010101);
+      background-size: 400% 400%;
+      animation: gothorainbow 12s ease infinite, buttonSparkle 3s ease-in-out infinite;
+      color: #e0e0e0;
+      cursor: pointer;
+      border-radius: 5px;
+      font-family: 'Old English Text MT', 'Gothic', serif;
+      font-size: 20px;
+      transition: transform 0.2s;
+    }
+    .gothic-button:hover {
+      transform: scale(1.1);
+    }
+    .volume-control {
+      margin-top: 10px;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    
+    /* Barra lateral izquierda (música) */
+    .sidebar {
+      position: fixed;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 80px;
+      padding: 10px 5px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      background: linear-gradient(180deg, #0a0a0a, #1a1a1a, #0a0a0a);
+      background-size: 400% 400%;
+      animation: subtleDarkShift 10s ease infinite, sidebarPulse 2s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+      border: 2px solid #000000;
+      z-index: 101;
+    }
+    @keyframes subtleDarkShift {
+      0%   { background-position: 0% 0%; }
+      50%  { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+    .sidebar-item {
+      position: relative;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .sidebar-item img {
+      width: 60px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px 2px rgba(255,255,255,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .sidebar-item img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px 4px rgba(255,255,255,0.4);
+    }
+    
+    /* Barra lateral derecha (anuncios/vídeos) */
+    .right-sidebar {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 80px;
+      padding: 10px 5px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      background: linear-gradient(180deg, #0a0a0a, #1a1a1a, #0a0a0a);
+      background-size: 400% 400%;
+      animation: subtleDarkShift 10s ease infinite, sidebarPulse 2s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+      border: 2px solid #000000;
+      z-index: 101;
+    }
+    .right-sidebar img {
+      width: 60px;
+      margin: 10px 0;
+      cursor: pointer;
+      border-radius: 5px;
+      box-shadow: 0 0 5px 2px rgba(255,255,255,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .right-sidebar img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px 4px rgba(255,255,255,0.4);
+    }
+    
+    /* Modal para reproducir videos con iframe (YouTube) */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      position: relative;
+      margin: 5% auto;
+      padding: 0;
+      width: 80%;
+      max-width: 800px;
+    }
+    .modal-content iframe {
+      width: 100%;
+      height: 450px;
+      border: none;
+      display: block;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      color: #fff;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 210;
+    }
+    .close:hover,
+    .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    /* Botón "Libro" (ubicado en la esquina inferior izquierda) */
+    .book-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      cursor: pointer;
+      z-index: 150;
+    }
+    .book-button img {
+      width: 80px;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      transition: transform 0.3s;
+    }
+    .book-button img:hover {
+      transform: scale(1.1);
+    }
+    /* Modal "Libro" */
+    .book-modal {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 200;
+      width: 300px;
+    }
+    .book-modal-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .book-modal-content img {
+      width: 80px;
+      margin: 10px;
+      cursor: pointer;
+      border: 2px solid #fff;
+      border-radius: 5px;
+      transition: transform 0.3s;
+    }
+    .book-modal-content img:hover {
+      transform: scale(1.1);
+    }
+    .book-modal .close-book {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      color: #fff;
+      font-size: 25px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- BOTÓN HOME CENTRADO con efecto carrusel (tal como definiste) -->
+  <a href="eder.html" class="home-button">HOME</a>
+  
+  <!-- Botón "Libro" -->
+  <div class="book-button" onclick="openBookModal()">
+    <img src="https://i.pinimg.com/236x/ca/1a/97/ca1a9747fddc2471731b6f00afff0207.jpg" alt="Libro">
+  </div>
+  
+  <!-- Modal "Libro" con imágenes de las músicas -->
+  <div id="bookModal" class="book-modal">
+    <span class="close-book" onclick="closeBookModal()">&times;</span>
+    <div class="book-modal-content">
+      <!-- Al hacer clic en cada imagen se invoca scrollToCassette(n) -->
+      <img src="https://i.pinimg.com/236x/38/74/b9/3874b99ee05dbb7e6212217bb5d43456.jpg" alt="Pista 1" onclick="scrollToCassette(0)">
+      <img src="https://i.pinimg.com/236x/b6/5c/4e/b65c4e9b160de2f407bf86dfafe1b7e0.jpg" alt="Pista 2" onclick="scrollToCassette(1)">
+      <img src="https://i.pinimg.com/236x/b2/60/02/b26002cfe2b04995a82ce3ef20bc10f8.jpg" alt="Pista 3" onclick="scrollToCassette(2)">
+      <img src="https://i.pinimg.com/236x/45/4d/13/454d137257695c53f416dcbd2b09ad4c.jpg" alt="Pista 4" onclick="scrollToCassette(3)">
+    </div>
+  </div>
+  
+  <!-- Barra lateral izquierda (música) -->
+  <div class="sidebar">
+    <div class="sidebar-item" onclick="toggleSidebarAudio(0)">
+      <img src="https://i.pinimg.com/236x/38/74/b9/3874b99ee05dbb7e6212217bb5d43456.jpg" alt="Pista 1">
+      <audio id="audio0" src="Disturbed - Decadence - Need for Speed Most Wanted Soundtrack - 1080p.mp3"></audio>
+    </div>
+    <div class="sidebar-item" onclick="toggleSidebarAudio(1)">
+      <img src="https://i.pinimg.com/236x/b6/5c/4e/b65c4e9b160de2f407bf86dfafe1b7e0.jpg" alt="Pista 2">
+      <audio id="audio1" src="Men At Work - Down Under (Official HD Video).mp3"></audio>
+    </div>
+    <div class="sidebar-item" onclick="toggleSidebarAudio(2)">
+      <img src="https://i.pinimg.com/236x/b2/60/02/b26002cfe2b04995a82ce3ef20bc10f8.jpg" alt="Pista 3">
+      <audio id="audio2" src="Nightcore - Mi Mi Mi - (Lyrics).mp3"></audio>
+    </div>
+    <div class="sidebar-item" onclick="toggleSidebarAudio(3)">
+      <img src="https://i.pinimg.com/236x/45/4d/13/454d137257695c53f416dcbd2b09ad4c.jpg" alt="Pista 4">
+      <audio id="audio3" src="Nightcore - Bad Boy.mp3"></audio>
+    </div>
+  </div>
+  
+  <!-- Barra lateral derecha (anuncios/vídeos) -->
+  <div class="right-sidebar">
+    <img src="https://i.pinimg.com/736x/8c/45/54/8c4554601a195242f58247cabf0c324c.jpg" alt="Anuncio 1" onclick="openModal('uuBETyA_yxc')">
+    <img src="https://i.pinimg.com/474x/0b/40/82/0b4082db6626af07e006d0098b8909b9.jpg" alt="Anuncio 2" onclick="openModal('05HUO0v7WbY')">
+    <img src="https://i.pinimg.com/236x/e1/1f/d2/e11fd22b72cc50e9abad5671a7c04321.jpg" alt="Anuncio 3" onclick="openModal('fxgvbUBx6UM')">
+  </div>
+  
+  <!-- Modal para reproducir el video (YouTube) -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <iframe id="modalVideo" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+  
+  <!-- Contenedor principal de la playlist (cada cassette con id para scroll) -->
+  <div class="playlist-container">
+    <div class="cassette" id="cassette0" onclick="playAudio(0)">
+      <img src="https://i.pinimg.com/236x/38/74/b9/3874b99ee05dbb7e6212217bb5d43456.jpg" alt="Cassette 1">
+      <audio id="audio0_main" src="Disturbed - Decadence - Need for Speed Most Wanted Soundtrack - 1080p.mp3"></audio>
+      <div class="controls">
+        <button class="gothic-button" onclick="pauseAudio(0); event.stopPropagation();">&#x23F8;</button>
+        <button class="gothic-button" onclick="stopAudio(0); event.stopPropagation();">&#x23F9;</button>
+      </div>
+      <div class="volume-control">
+        <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume(0, this.value)" />
+      </div>
+    </div>
+    
+    <div class="cassette" id="cassette1" onclick="playAudio(1)">
+      <img src="https://i.pinimg.com/236x/b6/5c/4e/b65c4e9b160de2f407bf86dfafe1b7e0.jpg" alt="Cassette 2">
+      <audio id="audio1_main" src="Men At Work - Down Under (Official HD Video).mp3"></audio>
+      <div class="controls">
+        <button class="gothic-button" onclick="pauseAudio(1); event.stopPropagation();">&#x23F8;</button>
+        <button class="gothic-button" onclick="stopAudio(1); event.stopPropagation();">&#x23F9;</button>
+      </div>
+      <div class="volume-control">
+        <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume(1, this.value)" />
+      </div>
+    </div>
+    
+    <div class="cassette" id="cassette2" onclick="playAudio(2)">
+      <img src="https://i.pinimg.com/236x/b2/60/02/b26002cfe2b04995a82ce3ef20bc10f8.jpg" alt="Cassette 3">
+      <audio id="audio2_main" src="Nightcore - Mi Mi Mi - (Lyrics).mp3"></audio>
+      <div class="controls">
+        <button class="gothic-button" onclick="pauseAudio(2); event.stopPropagation();">&#x23F8;</button>
+        <button class="gothic-button" onclick="stopAudio(2); event.stopPropagation();">&#x23F9;</button>
+      </div>
+      <div class="volume-control">
+        <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume(2, this.value)" />
+      </div>
+    </div>
+    
+    <div class="cassette" id="cassette3" onclick="playAudio(3)">
+      <img src="https://i.pinimg.com/236x/45/4d/13/454d137257695c53f416dcbd2b09ad4c.jpg" alt="Cassette 4">
+      <audio id="audio3_main" src="Nightcore - Bad Boy.mp3"></audio>
+      <div class="controls">
+        <button class="gothic-button" onclick="pauseAudio(3); event.stopPropagation();">&#x23F8;</button>
+        <button class="gothic-button" onclick="stopAudio(3); event.stopPropagation();">&#x23F9;</button>
+      </div>
+      <div class="volume-control">
+        <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume(3, this.value)" />
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Funciones para la barra lateral
+    function toggleSidebarAudio(index) {
+      const audio = document.getElementById('audio' + index);
+      const sidebarAudios = document.querySelectorAll('.sidebar audio');
+      sidebarAudios.forEach(a => {
+        if(a !== audio) {
+          a.pause();
+          a.currentTime = 0;
+        }
+      });
+      if (audio.paused) { 
+        audio.play(); 
+      } else { 
+        audio.pause(); 
+      }
+    }
+    
+    // Funciones para los cassettes principales
+    function playAudio(index) {
+      let audio = document.getElementById('audio' + index + '_main');
+      let allAudios = document.querySelectorAll("audio");
+      allAudios.forEach(a => a.pause());
+      audio.play();
+    }
+    function pauseAudio(index) {
+      let audio = document.getElementById('audio' + index + '_main');
+      audio.pause();
+    }
+    function stopAudio(index) {
+      let audio = document.getElementById('audio' + index + '_main');
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    function setVolume(index, value) {
+      let audio = document.getElementById('audio' + index + '_main');
+      audio.volume = value;
+    }
+    function nextAudio(event, currentIndex) {
+      event.stopPropagation();
+      let audios = document.querySelectorAll(".playlist-container audio");
+      let nextIndex = (currentIndex + 1) % audios.length;
+      playAudio(nextIndex);
+    }
+    
+    // Modal para videos de YouTube
+    function openModal(videoId) {
+      var modal = document.getElementById("videoModal");
+      var modalVideo = document.getElementById("modalVideo");
+      modalVideo.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+      modal.style.display = "block";
+    }
+    function closeModal() {
+      var modal = document.getElementById("videoModal");
+      var modalVideo = document.getElementById("modalVideo");
+      modal.style.display = "none";
+      modalVideo.src = "";
+    }
+    
+    // Funciones para el modal "Libro"
+    function openBookModal() {
+      document.getElementById("bookModal").style.display = "block";
+    }
+    function closeBookModal() {
+      document.getElementById("bookModal").style.display = "none";
+    }
+    
+    // Función para hacer scroll al cassette correspondiente y cerrar el modal "Libro"
+    function scrollToCassette(index) {
+      closeBookModal(); // Cierra el modal del libro
+      const cassette = document.getElementById('cassette' + index);
+      if (cassette) {
+        cassette.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>
